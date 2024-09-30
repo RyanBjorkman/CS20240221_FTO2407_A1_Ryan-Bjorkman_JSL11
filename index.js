@@ -1,7 +1,7 @@
 // TASK: import helper functions from utils
-import { getTasks, createNewTask } from './utils.js';
+import { getTasks, createNewTask } from './utils.js'; //importing getTasks and createNewTask functions from utils.js
 // TASK: import initialData
-import { initialData } from './initialData.js';
+import { initialData } from './initialData.js'; //importing initialData from initialData.js
 
 /*************************************************************************************************************************************************
  * FIX BUGS!!!
@@ -19,9 +19,8 @@ function initializeData() {
 
 // TASK: Get elements from the DOM
 const elements = {
-
+  boardsNavLinksDiv: document.getElementById('boards-nav-links-div'), // Retrieve the element with the ID 'boards-nav-links-div' and store it in the 'boardsNavLinksDiv' property
 }
-
 let activeBoard = ""
 
 // Extracts unique board names from tasks
