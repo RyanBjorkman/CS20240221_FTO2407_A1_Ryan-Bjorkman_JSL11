@@ -42,8 +42,7 @@ function fetchAndDisplayBoardsAndTasks() {
   displayBoards(boards);
 
   if (boards.length > 0) {
-    const localStorageBoard = JSON.parse(localStorage.getItem("activeBoard"))
-    activeBoard = localStorageBoard ? localStorageBoard : boards[0]; //corrected syntax for ternary operation from ; to :
+    activeBoard = JSON.parse(localStorage.getItem('activeBoard')) || boards[0];
     elements.headerBoardName.textContent = activeBoard;
     styleActiveBoard(activeBoard);
     refreshTasksUI();
@@ -99,19 +98,22 @@ function filterAndDisplayTasksByBoard(boardName) {
       taskElement.classList.add("task-div");
       taskElement.textContent = task.title;
       taskElement.setAttribute('data-task-id', task.id);
-
-      // Listen for a click event on each task and open a modal
-      taskElement.addEventListener('click', () => { //corrected syntax for addEventListener function
-        openEditTaskModal(task);
-      });
-
-      tasksContainer.appendChild(taskElement);
     });
   });
-}
+  }
+
+  function addTaskToColumn(task, tasksContainer) {
+    const taskElement = document.createElement("div");
+    taskElement.classList.add("task-div");
+    taskElement.textContent = task.title;
+    taskElement.setAttribute('data-task-id', task.id);
+    tasksElement.addEventListener('click', () => openEditTaskModal(task));
+    tasksContainer.appendChild(taskElement);
+  }
 
 
-function refreshTasksUI() {
+
+function refreshTasksUI() { // Refreshes the tasks UI
   filterAndDisplayTasksByBoard(activeBoard);
 }
 
@@ -119,53 +121,51 @@ function refreshTasksUI() {
 // TASK: Fix Bugs
 function styleActiveBoard(boardName) {
   document.querySelectorAll('.board-btn').forEach(btn => { //bug fix: spelleing error forEach
-    
-    if(btn.textContent === boardName) {
-      btn.classList.add('active') //bug fix: corrected syntax for add class
-    }
-    else {
-      btn.classList.remove('active'); //bug fix: corrected syntax for remove class
-    }
+    btn.classList.toggle('active', btn.textContent === boardName); //bug fix: corrected syntax for toggle method
   });
 }
 
 
-function addTaskToUI(task) {
-  const column = document.querySelector('.column-div[data-status="${task.status}"]'); 
-  if (!column) {
-    console.error(`Column not found for status: ${task.status}`);
-    return;
-  }
+//add task form submission handler
+function addTask(event) {
+  event.preventDefault(); // Prevent the default form submission behavior
 
-  let tasksContainer = column.querySelector('.tasks-container');
-  if (!tasksContainer) {
-    console.warn(`Tasks container not found for status: ${task.status}, creating one.`);
-    tasksContainer = document.createElement('div');
-    tasksContainer.className = 'tasks-container';
-    column.appendChild(tasksContainer);
-  }
+const task = {
+  title: event.target.elements.title.value,
+  description: event.target.elements.description.value,
+  board: event.target.elements.board.value,
+  status: event.target.elements.status.value
+};
 
-  const taskElement = document.createElement('div');
-  taskElement.className = 'task-div';
-  taskElement.textContent = task.title; // Modify as needed
-  taskElement.setAttribute('data-task-id', task.id);
-  
-  tasksContainer.appendChild(taskElement); // Append the task element to the tasks container 
+const newTask = createNewTask(task);
+if (newTask) {
+  addTaskToUI(newTask);
+  toggleModal(false);
+  elements.filterDiv.style.display = 'none'; // Also hide the filter overlay
+  event.target.reset();
+  refreshTasksUI();
+}
+}
+
+function toggleModal(show, modal = elements.modalWindow) { //toggle modal function
+  modal.style.display = show ? 'block' : 'none';
+}
+
+function toggleSidebar(show) {
+  const sidebar = document.getElementById('sidebar');
+  const main = document.getElementById('main');
+  sidebar.style.display = show ? 'block' : 'none';
+  main.style.marginLeft = show ? '250px' : '0';
+  localStorage.setItem('showSideBar', show.toString());
 }
 
 
-
-function setupEventListeners() {
-  // Cancel editing task event listener
-  const cancelEditBtn = document.getElementById('cancel-edit-btn');
-  cancelEditBtn.click = () => toggleModal(false, elements.editTaskModal); //bug fix: corrected syntax in click function
-
   // Cancel adding new task event listener
   const cancelAddTaskBtn = document.getElementById('cancel-add-task-btn');
-  cancelAddTaskBtn.addEventListener('click', () => toggleModal(false, elements.editTaskModal)); //bug fix: corrected syntax in addEventListener function
-    toggleModal(false);
-    elements.filterDiv.style.display = 'none'; // Also hide the filter overlay
-  }
+  cancelAddTaskBtn.addEventListener('click', () => {
+    toggleModal(false, elements.editTaskModal); //bug fix: corrected syntax in addEventListener function
+  elements.filterDiv.style.display = 'none'; // Also hide the filter overlay
+  });
 
   // Clicking outside the modal to close it
   elements.filterDiv.addEventListener('click', () => {
@@ -175,10 +175,10 @@ function setupEventListeners() {
 
   // Show sidebar event listener
   // bug fix: corrected syntax in event listener function
-  elements.hideSideBarBtn.addEventListener('click', function() { //bug fix: corrected syntax in event listener function
+  elements.hideSideBarBtn.addEventListener('click', () => { //bug fix: corrected syntax in event listener function
     toggleSidebar(false);
   });
-  elements.showSideBarBtn.addEventListener('click', function() { //bug fix: corrected syntax in event listener function
+  elements.showSideBarBtn.addEventListener('click', () => { //bug fix: corrected syntax in event listener function
     toggleSidebar(true);
   });
 
