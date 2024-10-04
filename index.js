@@ -52,7 +52,7 @@ function fetchAndDisplayBoardsAndTasks() {
 // Creates different boards in the DOM
 // TASK: Fix Bugs
 function displayBoards(boards) {
-  const boardsContainer = document.getElementById("boards-nav-links-div");
+  const boardsContainer = elements.boardsNavLinksDiv;
   boardsContainer.innerHTML = ''; // Clears the container
 
   boards.forEach(board => {
@@ -94,10 +94,7 @@ function filterAndDisplayTasksByBoard(boardName) {
     column.appendChild(tasksContainer);
 
     filteredTasks.filter(task => task.status === status).forEach(task => { //corrected syntax for forEach function
-      const taskElement = document.createElement("div");
-      taskElement.classList.add("task-div");
-      taskElement.textContent = task.title;
-      taskElement.setAttribute('data-task-id', task.id);
+      addTaskToColumn(task, tasksContainer);
     });
   });
   }
