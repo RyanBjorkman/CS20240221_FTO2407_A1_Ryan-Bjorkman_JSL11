@@ -201,42 +201,68 @@ function toggleModal(show, modal = elements.modalWindow) {
 function addTask(event) {
   event.preventDefault(); 
 
-  //Assign user input to the task object
-    const task = {
-      
-    };
-    const newTask = createNewTask(task);
-    if (newTask) {
-      addTaskToUI(newTask);
-      toggleModal(false);
-      elements.filterDiv.style.display = 'none'; // Also hide the filter overlay
-      event.target.reset();
-      refreshTasksUI();
-    }
-}
+  // Assign user input to the task object
+  const task = {
+    title: event.target.elements.title.value,
+    description: event.target.elements.description.value,
+    board: event.target.elements.board.value,
+    status: event.target.elements.status.value
+  }; //bug fix: corrected syntax for object properties
+
+  const newTask = createNewTask(task);
+  if (newTask) {
+    addTaskToUI(newTask);
+    toggleModal(false);
+    elements.filterDiv.style.display = 'none'; // Also hide the filter overlay
+    event.target.reset();
+    refreshTasksUI();
+  }
+}//bug fix: corrected syntax for event.target.reset()
 
 
 function toggleSidebar(show) {
- 
+  const sidebar = document.getElementById('sidebar');
+  const main = document.getElementById('main');
+  if (show) {
+    sidebar.style.display = 'block';
+    main.style.marginLeft = '250px';
+  } else {
+    sidebar.style.display = 'none';
+    main.style.marginLeft = '0';
+  }
+  localStorage.setItem('showSideBar', show.toString());
 }
 
 function toggleTheme() {
- 
+  document.body.classList.toggle('light-theme');
+  const isLightTheme = document.body.classList.contains('light-theme') ? 'enabled' : 'disabled';
+  localStorage.setItem('light-theme', isLightTheme); 
 }
 
 
 
 function openEditTaskModal(task) {
-  // Set task details in modal inputs
-  
+  // Set task details in modal inputs 
+  elements.editTaskModal.querySelector('#title').value = task.title; //added value to title input
+  elements.editTaskModal.querySelector('#description').value = task.description; //added value to description input
+  elements.editTaskModal.querySelector('#board').value = task.board; //added value to board input
+  elements.editTaskModal.querySelector('#status').value = task.status;//added value to status input
+   
 
   // Get button elements from the task modal
-
+  const saveChangesBtn = elements.editTaskModal.querySelector('#save-changes-btn'); //added save changes button
+  const deleteTaskBtn = elements.editTaskModal.querySelector('#delete-task-btn'); //added delete task button
 
   // Call saveTaskChanges upon click of Save Changes button
- 
+  saveChangesBtn.addEventListener('click', () => { //added event listener for save changes button
+    saveTaskChanges(task.id);
+  }); 
 
   // Delete task using a helper function and close the task modal
+  deleteTaskBtn.addEventListener('click', () => { //added event listener for delete task button
+    deleteTask(task.id);
+    toggleModal(false, elements.editTaskModal);
+  });
 
 
   toggleModal(true, elements.editTaskModal); // Show the edit task modal
