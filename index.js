@@ -149,7 +149,7 @@ function addTaskToUI(task) {
 function setupEventListeners() {
   // Cancel editing task event listener
   const cancelEditBtn = document.getElementById('cancel-edit-btn');
-  cancelEditBtn.click() => toggleModal(false, elements.editTaskModal));
+  cancelEditBtn.click = () => toggleModal(false, elements.editTaskModal); //bug fix: corrected syntax in click function
 
   // Cancel adding new task event listener
   const cancelAddTaskBtn = document.getElementById('cancel-add-task-btn');
@@ -191,7 +191,7 @@ function setupEventListeners() {
 // Toggles tasks modal
 // Task: Fix bugs
 function toggleModal(show, modal = elements.modalWindow) {
-  modal.style.display = show ? 'block' => 'none'; 
+  modal.style.display = show ? 'block' : 'none'; //bug fix: corrected syntax for ternary operation
 }
 
 /*************************************************************************************************************************************************
