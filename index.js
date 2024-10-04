@@ -40,6 +40,7 @@ function fetchAndDisplayBoardsAndTasks() {
   const tasks = getTasks();
   const boards = [...new Set(tasks.map(task => task.board).filter(Boolean))];
   displayBoards(boards);
+
   if (boards.length > 0) {
     const localStorageBoard = JSON.parse(localStorage.getItem("activeBoard"))
     activeBoard = localStorageBoard ? localStorageBoard : boards[0]; //corrected syntax for ternary operation from ; to :
@@ -54,33 +55,24 @@ function fetchAndDisplayBoardsAndTasks() {
 function displayBoards(boards) {
   const boardsContainer = document.getElementById("boards-nav-links-div");
   boardsContainer.innerHTML = ''; // Clears the container
+
   boards.forEach(board => {
     const boardElement = document.createElement("button");
     boardElement.textContent = board;
     boardElement.classList.add("board-btn");
-    boardElement.addEventListener('click', function() { //bug fix: addEventListener and corrected syntax brackets
-      elements.headerBoardName.textContent = board;
-      filterAndDisplayTasksByBoard(board);
-      activeBoard = board //assigns active board
-      localStorage.setItem("activeBoard", JSON.stringify(activeBoard))
-      styleActiveBoard(activeBoard); document.querySelectorAll('.board-btn').forEach(btn => { //bug fix: corrected syntax in forEach function
-      }); //bug fix: added closing bracket
-        // Add active class to the active board button
-        if (btn.textContent === board) {
-          btn.classList.add('active')
-        } else {
-          btn.classList.remove('active');
-        }
-    });
+    boardElement.addEventListener('click', () => handleBoardClick(board)); //bug fix: addEventListener and corrected syntax brackets
     boardsContainer.appendChild(boardElement);
-    document.querySelectorAll('.board-btn').forEach(btn => { //bug fix: corrected syntax in forEach function    
-      if (btn.textContent === activeBoard) {
-        btn.classList.add('active')
-      } else {
-        btn.classList.remove('active');
-      }
-      });
+});
 
+styleActiveBoard(activeBoard); // Styles the active board
+}
+
+function handleBoardClick(board) { //bug fix: corrected syntax for handleBoardClick function
+  elements.headerBoardName.textContent = board;
+  filterAndDisplayTasksByBoard(board);
+  activeBoard = board;
+  localStorage.setItem("activeBoard", JSON.stringify(activeBoard));
+  styleActiveBoard(board);
 }
 
 // Filters tasks corresponding to the board name and displays them on the DOM.
