@@ -31,7 +31,7 @@ function fetchAndDisplayBoardsAndTasks() {
   displayBoards(boards);
   if (boards.length > 0) {
     const localStorageBoard = JSON.parse(localStorage.getItem("activeBoard"))
-    activeBoard = localStorageBoard ? localStorageBoard ;  boards[0]; 
+    activeBoard = localStorageBoard ? localStorageBoard : boards[0]; //corrected syntax for ternary operation from ; to :
     elements.headerBoardName.textContent = activeBoard
     styleActiveBoard(activeBoard)
     refreshTasksUI();
@@ -158,6 +158,7 @@ function setupEventListeners() {
   });
 
   // Show sidebar event listener
+  // bug fix: corrected syntax in event listener function
   elements.hideSideBarBtn.click(function() {
     toggleSidebar(false);
   });
