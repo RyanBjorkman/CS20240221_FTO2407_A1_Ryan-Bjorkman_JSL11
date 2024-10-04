@@ -20,7 +20,18 @@ function initializeData() {
 // TASK: Get elements from the DOM
 const elements = {
   boardsNavLinksDiv: document.getElementById('boards-nav-links-div'), // Retrieve the element with the ID 'boards-nav-links-div' and store it in the 'boardsNavLinksDiv' property
-}
+  headerBoardName: document.getElementById('header-board-name'), // Retrieve the element with the ID 'header-board-name' and store it in the 'headerBoardName' property
+  columnDivs: document.querySelectorAll('.column-div'), // Retrieve all elements with the class 'column-div' and store them in the 'columnDivs' property
+  modalWindow: document.getElementById('modal-window'), // Retrieve the element with the ID 'modal-window' and store it in the 'modalWindow' property
+  editTaskModal: document.getElementById('edit-task-modal'), // Retrieve the element with the ID 'edit-task-modal' and store it in the 'editTaskModal' property
+  filterDiv: document.getElementById('filter-div'), // Retrieve the element with the ID 'filter-div' and store it in the 'filterDiv' property
+  hideSideBarBtn: document.getElementById('hide-sidebar-btn'), // Retrieve the element with the ID 'hide-sidebar-btn' and store it in the 'hideSideBarBtn' property
+  showSideBarBtn: document.getElementById('show-sidebar-btn'), // Retrieve the element with the ID 'show-sidebar-btn' and store it in the 'showSideBarBtn' property
+  themeSwitch: document.getElementById('theme-switch'), // Retrieve the element with the ID 'theme-switch' and store it in the 'themeSwitch' property
+  createNewTaskBtn: document.getElementById('create-new-task-btn'), // Retrieve the element with the ID 'create-new-task-btn' and store it in the 'createNewTaskBtn' property
+  filterDiv: document.getElementById('filter-div'), // Retrieve the element with the ID 'filter-div' and store it in the 'filterDiv' property
+};
+
 let activeBoard = ""
 
 // Extracts unique board names from tasks
@@ -62,7 +73,13 @@ function displayBoards(boards) {
         }
     });
     boardsContainer.appendChild(boardElement);
-  });
+    document.querySelectorAll('.board-btn').forEach(btn => { //bug fix: corrected syntax in forEach function    
+      if (btn.textContent === activeBoard) {
+        btn.classList.add('active')
+      } else {
+        btn.classList.remove('active');
+      }
+      });
 
 }
 
@@ -153,10 +170,10 @@ function setupEventListeners() {
 
   // Cancel adding new task event listener
   const cancelAddTaskBtn = document.getElementById('cancel-add-task-btn');
-  cancelAddTaskBtn.addEventListener('click', () => {
+  cancelAddTaskBtn.addEventListener('click', () => toggleModal(false, elements.editTaskModal)); //bug fix: corrected syntax in addEventListener function
     toggleModal(false);
     elements.filterDiv.style.display = 'none'; // Also hide the filter overlay
-  });
+  }
 
   // Clicking outside the modal to close it
   elements.filterDiv.addEventListener('click', () => {
@@ -186,7 +203,7 @@ function setupEventListeners() {
   elements.modalWindow.addEventListener('submit',  (event) => {
     addTask(event)
   });
-}
+
 
 // Toggles tasks modal
 // Task: Fix bugs
@@ -300,6 +317,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function init() {
+  initializeData();
   setupEventListeners();
   const showSidebar = localStorage.getItem('showSideBar') === 'true';
   toggleSidebar(showSidebar);
