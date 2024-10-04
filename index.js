@@ -53,6 +53,7 @@ function displayBoards(boards) {
       activeBoard = board //assigns active board
       localStorage.setItem("activeBoard", JSON.stringify(activeBoard))
       styleActiveBoard(activeBoard); document.querySelectorAll('.board-btn').forEach(btn => { //bug fix: corrected syntax in forEach function
+      }); //bug fix: added closing bracket
         // Add active class to the active board button
         if (btn.textContent === board) {
           btn.classList.add('active')
@@ -108,7 +109,7 @@ function refreshTasksUI() {
 // Styles the active board by adding an active class
 // TASK: Fix Bugs
 function styleActiveBoard(boardName) {
-  document.querySelectorAll('.board-btn').foreach(btn => { 
+  document.querySelectorAll('.board-btn').forEach(btn => { //bug fix: spelleing error forEach
     
     if(btn.textContent === boardName) {
       btn.add('active') 
