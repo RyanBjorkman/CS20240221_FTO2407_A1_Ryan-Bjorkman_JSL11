@@ -112,10 +112,10 @@ function styleActiveBoard(boardName) {
   document.querySelectorAll('.board-btn').forEach(btn => { //bug fix: spelleing error forEach
     
     if(btn.textContent === boardName) {
-      btn.add('active') 
+      btn.classList.add('active') //bug fix: corrected syntax for add class
     }
     else {
-      btn.remove('active'); 
+      btn.classList.remove('active'); //bug fix: corrected syntax for remove class
     }
   });
 }
@@ -141,7 +141,7 @@ function addTaskToUI(task) {
   taskElement.textContent = task.title; // Modify as needed
   taskElement.setAttribute('data-task-id', task.id);
   
-  tasksContainer.appendChild(); 
+  tasksContainer.appendChild(taskElement); // Append the task element to the tasks container 
 }
 
 
@@ -166,10 +166,10 @@ function setupEventListeners() {
 
   // Show sidebar event listener
   // bug fix: corrected syntax in event listener function
-  elements.hideSideBarBtn.click(function() {
+  elements.hideSideBarBtn.addEventListener('click', function() { //bug fix: corrected syntax in event listener function
     toggleSidebar(false);
   });
-  elements.showSideBarBtn.click(function() {
+  elements.showSideBarBtn.addEventListener('click', function() { //bug fix: corrected syntax in event listener function
     toggleSidebar(true);
   });
 
