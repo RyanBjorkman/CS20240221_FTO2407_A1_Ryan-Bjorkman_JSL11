@@ -52,7 +52,13 @@ function displayBoards(boards) {
       filterAndDisplayTasksByBoard(board);
       activeBoard = board //assigns active board
       localStorage.setItem("activeBoard", JSON.stringify(activeBoard))
-      styleActiveBoard(activeBoard)
+      styleActiveBoard(activeBoard); document.querySelectorAll('.board-btn').forEach(btn => { //bug fix: corrected syntax in forEach function
+        // Add active class to the active board button
+        if (btn.textContent === board) {
+          btn.classList.add('active')
+        } else {
+          btn.classList.remove('active');
+        }
     });
     boardsContainer.appendChild(boardElement);
   });
@@ -63,7 +69,7 @@ function displayBoards(boards) {
 // TASK: Fix Bugs
 function filterAndDisplayTasksByBoard(boardName) {
   const tasks = getTasks(); // Fetch tasks from a simulated local storage function
-  const filteredTasks = tasks.filter(task => task.board = boardName);
+  const filteredTasks = tasks.filter(task => task.board === boardName); //corected syntax for filter function
 
   // Ensure the column titles are set outside of this function or correctly initialized before this function runs
 
@@ -78,14 +84,14 @@ function filterAndDisplayTasksByBoard(boardName) {
     const tasksContainer = document.createElement("div");
     column.appendChild(tasksContainer);
 
-    filteredTasks.filter(task => task.status = status).forEach(task => { 
+    filteredTasks.filter(task => task.status === status).forEach(task => { //corrected syntax for forEach function
       const taskElement = document.createElement("div");
       taskElement.classList.add("task-div");
       taskElement.textContent = task.title;
       taskElement.setAttribute('data-task-id', task.id);
 
       // Listen for a click event on each task and open a modal
-      taskElement.click() => { 
+      taskElement.addEventListener('click', () => { //corrected syntax for addEventListener function
         openEditTaskModal(task);
       });
 
