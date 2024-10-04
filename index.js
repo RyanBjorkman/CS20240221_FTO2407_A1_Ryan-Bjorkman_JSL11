@@ -270,17 +270,27 @@ function openEditTaskModal(task) {
 
 function saveTaskChanges(taskId) {
   // Get new user inputs
-  
+  const title = elements.editTaskModal.querySelector('#title').value; //added title input
+  const description = elements.editTaskModal.querySelector('#description').value; //added description input
+  const board = elements.editTaskModal.querySelector('#board').value; //added board input
+  const status = elements.editTaskModal.querySelector('#status').value; //added status
 
   // Create an object with the updated task details
+  const updatedTask = {
+    id: taskId,
+    title: title,
+    description: description,
+    board: board,
+    status: status
+  }; //added updated task object
 
 
-  // Update task using a hlper functoin
- 
+  // Update task using a hlper function
+  updateTask(updatedTask); // Update the task in the localStorage
 
   // Close the modal and refresh the UI to reflect the changes
-
-  refreshTasksUI();
+  toggleModal(false, elements.editTaskModal); // Close the modal
+  refreshTasksUI(); // Refresh the UI
 }
 
 /*************************************************************************************************************************************************/
